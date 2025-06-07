@@ -37,15 +37,31 @@ export default function AddPublication() {
     }
   }
 
-  const handleLogin = () => {
-    if (email === 'Maitanmio@babcock.edu.ng' && password === '123456789') {
+  const handleLogin = async () => {
+    try {
+      const res = await fetch('/api/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, password }),
+      })
+  
+      if (!res.ok) {
+        const data = await res.json()
+        alert(data.error || 'Login failed')
+        return
+      }
+  
       localStorage.setItem('auth', 'true')
       setIsAuthenticated(true)
       fetchPublications()
-    } else {
-      alert('Invalid credentials')
+    } catch (error) {
+      alert('An error occurred during login')
+      console.error(error)
     }
   }
+  
 
   const handleLogout = () => {
     localStorage.removeItem('auth')

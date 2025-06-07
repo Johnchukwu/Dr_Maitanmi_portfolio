@@ -1,0 +1,48 @@
+@import url('https://fonts.googleapis.com/css2?family=Amarante&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Amarante&family=Germania+One&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Amarante&family=Germania+One&family=Grenze+Gotisch:wght@100..900&display=swap');
+
+
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+@keyframes bounce-slow {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-15px); }
+}
+
+@keyframes bounce-medium {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-20px); }
+}
+
+@keyframes bounce-fast {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-25px); }
+}
+
+.bounce-slow {
+  animation: bounce-slow 3s ease-in-out infinite;
+}
+
+.bounce-medium {
+  animation: bounce-medium 2s ease-in-out infinite;
+}
+
+.bounce-fast {
+  animation: bounce-fast 1.5s ease-in-out infinite;
+}
+
+
+
+
+
+html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 80px; /* height of navbar */
+  }
+  
+  

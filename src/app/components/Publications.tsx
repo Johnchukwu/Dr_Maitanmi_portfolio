@@ -10,12 +10,40 @@ type Publication = {
 
 export default function Publications() {
   const [publications, setPublications] = useState<Publication[]>([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
-    const stored = JSON.parse(localStorage.getItem('publications') || '[]')
-    setPublications(stored)
+    async function fetchPublications() {
+      setLoading(true)
+      setError(null)
+      try {
+        const res = await fetch('/api/publications')
+        if (!res.ok) throw new Error('Failed to fetch publications')
+        const data: Publication[] = await res.json()
+        setPublications(data)
+        localStorage.setItem('publications', JSON.stringify(data))
+      } catch (err) {
+        setError((err as Error).message)
+        // fallback to localStorage if available
+        const stored = localStorage.getItem('publications')
+        if (stored) {
+          setPublications(JSON.parse(stored))
+        }
+      } finally {
+        setLoading(false)
+      }
+    }
+    fetchPublications()
   }, [])
 
+  if (loading) {
+    return <p className="text-center mt-10">Loading publications...</p>
+  }
+
+  if (error) {
+    return <p className="text-center mt-10 text-red-600">Error: {error}</p>
+  }
 
   return (
     <section
@@ -45,8 +73,6 @@ export default function Publications() {
       <h2 className="text-3xl font-bold text-center mb-6 relative z-10" data-aos="fade-down">
         Publications
       </h2>
-
-   
 
       <div className="relative max-w-5xl mx-auto z-10">
         <div className="absolute left-1/2 transform -translate-x-1/2 h-full border-l-4 border-[#2F6690]" />
